@@ -1,0 +1,81 @@
+/*
+===============================================================================
+Creating views by joining similar information
+===============================================================================
+Purpose:
+   Different views for customer information, product information and sales
+information are created by joining the tables on matching keys to ensure
+the easy accessibility of relevant and similar information.
+
+Views created:
+   - customers
+   - products
+   - sales
+===============================================================================
+*/
+
+
+create view customers as (
+select 
+      row_number() over(order by cust_id) as customer_key,
+      ci.cust_id as customer_id, 
+      ci.cust_firstname  as first_name,
+      ci.cust_lastname as last_name,
+      la.country as country,
+      case 
+          when coi.gender = 'Unknown' then ci.cust_gender
+          else coi.gender
+		end as gender,
+	  coi.Bdate as birth_date,
+      ci.cust_create_date as create_date,
+      ci.cust_marital_status as marital_status
+from customer_info ci
+left join customer_info2 coi
+on        ci.cust_key = coi.cid
+left join country_info la
+on        ci.cust_key = la.cid
+);
+
+
+
+create view products as
+(
+select 
+      row_number() over(order by pn.prd_start_dt, pn.prd_key) as product_key,
+      pn.prd_id as product_id,
+      pn.prd_key as product_number,
+      pn.prd_nm as product_name,
+      pn.cat_key as category_id,
+      pc.category as category,
+	  pc.subcat as subcategory,
+      pn.prd_cost as cost,
+      pc.maintenance as maintenance,
+      pn.prd_line as product_line,
+      pn.prd_start_dt as start_date
+from product_info pn
+left join cat_info pc
+on pn.cat_key = pc.id
+where prd_end_dt is null -- Filter out all historical data
+);
+
+
+
+
+create view sales as
+(
+select 
+       si.sls_ord_num as order_number,
+	   pr.product_key ,
+       cu.customer_key,
+       si.sls_order_dt as order_date,
+       si.sls_due_dt as due_date,
+       si.sls_ship_dt as shipping_date, 
+       si.sls_sales as sales_amount,
+       si.sls_quantity as quantity, 
+       si.sls_price as sales_price
+from sales_info si
+left join products pr
+on si.sls_prd_key = pr.product_number
+join customers cu 
+on si.sls_cust_id = cu.customer_id
+);
