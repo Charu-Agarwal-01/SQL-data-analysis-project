@@ -1,0 +1,217 @@
+
+
+/*
+===============================================================================
+Transforming the raw dataset into clean and standardised format
+===============================================================================
+Purpose:
+    To clean and transform data by handling missing and erroneous data, standarising
+data and making it fit for joining purposes including quality checks.
+
+Cleaned tables created:
+    - customer_info
+    - product_info
+    - sales_info
+    - customer_info2
+    - country_info
+    - cat_info
+===============================================================================
+
+
+===============================================================================
+Transformed 'cust_info' csv file into clean 'customer_info' 
+===============================================================================
+create table customer_info(
+cust_id int,
+cust_key varchar(15),
+cust_firstname varchar(20),
+cust_lastname varchar(20),
+cust_gender varchar(8),
+cust_marital_status varchar(10),
+cust_create_date date
+) ;
+
+insert into customer_info(
+select cst_id, 
+       cst_key, 
+       trim(cst_firstname) as cst_firstname,
+       trim(cst_lastname) as cst_lastname, 
+       case 
+            when UPPER(TRIM(cst_gndr))='F' then 'Female' 
+	        when UPPER(TRIM(cst_gndr))='M' then 'Male' 
+		    else 'N/A' 
+		end as cst_gndr, -- Normalize gender values to readable format
+	  case
+            when upper(trim(cst_marital_status))='S' then 'Single' 
+	        when upper(trim(cst_marital_status))='M' then 'Married' 
+		    else 'N/A' 
+	   end as cst_marital_status,  -- Normalize marital status values to readable format
+       cst_create_date
+from 
+       (select *, 
+               row_number() over (partition by cst_id order by cst_create_date desc) as rank_1 
+		from cust_info 
+        where cst_id is not null) t 
+where rank_1=1  -- Select the most recent record per customer
+);
+
+
+===============================================================================
+Transformed 'prd_info' csv file into clean 'product_info' 
+===============================================================================
+create table product_info(
+prd_id int,
+cat_key varchar(20),
+prd_key varchar(20),
+prd_nm varchar(60),
+prd_cost int,
+prd_line varchar(15),
+prd_start_dt date,
+prd_end_dt date) 
+;
+
+insert into product_info(
+select
+	   prd_id,
+	   replace(substring(prd_key,1, 5),'-','_') as cat_id, -- Extra category id
+       substring(prd_key, 7, length(prd_key)) as prd_key,  -- Extra product key
+       prd_nm,
+       coalesce(prd_cost,0) as prd_cost,
+	   case upper(trim(prd_line))  -- Maps product lines to descriptive values
+			 when 'R' then 'Road'
+             when 'S' then 'Other sales'
+             when 'M' then 'Mountain'
+             when 'T' then 'Touring'
+             else 'Unknown'
+	    end as prd_line,
+       prd_start_dt,
+      lead(prd_start_dt) over(partition by prd_key order by prd_start_dt) - INTERVAL 1 DAY as prd_end_dt
+      -- calculate end date as one day before the next start date 
+from 
+       prd_info);
+
+
+===============================================================================
+Transformed 'sales_details' csv file into clean 'sales_info' 
+===============================================================================
+create table sales_info(
+sls_ord_num varchar(20),
+sls_prd_key varchar(20),
+sls_cust_id int,
+sls_order_dt date,
+sls_due_dt date,
+sls_ship_dt date,
+sls_sales int,
+sls_quantity int,
+sls_price int
+);
+
+insert into sales_info (
+select 
+        sls_ord_num,
+        sls_prd_key,
+        sls_cust_id,
+        case 
+             when sls_order_dt = 0 or length(sls_order_dt) !=8 then null
+             else cast(sls_order_dt as date)  -- handling invalid order date
+		end as sls_order_dt,
+        case 
+             when sls_ship_dt = 0 or length(sls_ship_dt) !=8 then null
+             else cast(sls_ship_dt as date) -- handling invalid ship date
+		end as sls_ship_dt,
+        case 
+             when sls_due_dt = 0 or length(sls_due_dt) !=8 then null
+             else cast(sls_due_dt as date)  -- handling invalid due date
+		end as sls_due_dt,
+        case 
+              when sls_sales is null or sls_sales<=0 or sls_sales!= sls_quantity * abs(sls_price)
+                   then sls_quantity * abs(sls_price)
+			  else sls_sales  -- recalculate sales if it is missing or incorrect
+		end as sls_sales,
+        sls_quantity,
+        case 
+              when sls_price is null or sls_price <= 0
+                    then sls_sales / nullif(sls_quantity,0)
+		      else sls_price -- recalculate price if it is missing or incorrect
+		end as sls_price
+from
+    sales_details
+);
+
+
+
+
+===============================================================================
+Transformed 'cust_az12' csv file into clean 'customer_info2'
+===============================================================================
+create table customer_info2(
+cid varchar(20),
+Bdate date,
+gender varchar(10)
+);
+
+
+insert into customer_info2(
+select 
+      case 
+           when cid like 'NAS%' then substring(cid, 4, length(cid))
+		   else cid -- Remove 'NAS' if present to match with the cust_key of customer_info
+	  end as cid,
+      case 
+		   when cast(Bdate as date) > curdate() then null
+	       else Bdate  -- Setting future birthdates as null
+	  end as Bdate,
+      case 
+           when upper(trim(gen)) in ('F', 'Female') then 'Female'
+           when upper(trim(gen)) in ('M', 'Male') then 'Male'
+           else 'Unknown'  -- handling inconsistent and missing gender values
+	  end as gender
+from
+      cust_az12
+);
+
+
+
+===============================================================================
+Transformed 'loc_a101' csv file into clean 'country_info'
+===============================================================================
+create table country_info(
+cid varchar(20),
+country varchar(20)
+);
+
+
+insert into country_info
+(
+select 
+       replace(CID, '-','') as CID,
+       case 
+		    when Trim(cntry) = 'DE' then 'Germany'
+            when Trim(cntry) in ('US', 'USA') then 'United States'
+            when Trim(cntry) = '' or cntry is null then 'Unknown'
+            else Trim(cntry) -- Normalize and handle missing or blank country names
+		end as country
+from
+       loc_a101
+)
+
+
+===============================================================================
+Transformed 'px_cat_g1v2' csv file into clean 'cat_info'
+===============================================================================
+create table cat_info(
+ID varchar(20),
+category varchar(20),
+subcat varchar(30),
+maintenance varchar(5)
+);
+
+insert into cat_info
+(
+select 
+      ID,
+      CAT,
+      SUBCAT,
+      MAINTENANCE
+from px_cat_g1v2
+);
