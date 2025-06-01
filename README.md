@@ -11,14 +11,14 @@ This project involves:
 4. **Analytics & Reporting**: Creating SQL-based reports for actionable insights.
 
 
-#### Objective
+#### Objective:
 Develop SQL-based analytics to deliver detailed insights into:
 - **Customer Behavior**
 - **Product Performance**
 - **Sales Trends**
 
 
-#### Specifications
+#### Specifications:
 - **Data Sources**: Import data from two source systems (ERP and CRM) provided as CSV files.
 - **Data Quality**: Cleanse and resolve data quality issues prior to analysis.
 - **Integration**: Combine both sources into a single, user-friendly data model designed for analytical queries.
