@@ -1,13 +1,14 @@
-# Data Catalog 
+Data Catalog 
 
-## Overview
-The script consists of description of the transformed final data namely customers, products and sales.
+-------------------------------------------------------------------------------------------------------------------------
+Overview:
+    The script consists of description of the transformed final data namely customers, products and sales.
+-------------------------------------------------------------------------------------------------------------------------
 
----
 
-### 1. **customers**
-- **Purpose:** Stores customer details enriched with demographic and geographic data.
-- **Columns:**
+1. customers
+- Purpose: Stores customer details enriched with demographic and geographic data.
+- Columns:
 
 | Column Name      | Data Type     | Description                                                                                   |
 |------------------|---------------|-----------------------------------------------------------------------------------------------|
@@ -23,9 +24,9 @@ The script consists of description of the transformed final data namely customer
 
 ---
 
-### 2. **products**
-- **Purpose:** Provides information about the products and their attributes.
-- **Columns:**
+ 2. products
+- Purpose: Provides information about the products and their attributes.
+- Columns:
 
 | Column Name         | Data Type     | Description                                                                                   |
 |---------------------|---------------|-----------------------------------------------------------------------------------------------|
@@ -43,9 +44,9 @@ The script consists of description of the transformed final data namely customer
 
 ---
 
-### 3. **sales**
-- **Purpose:** Stores transactional sales data for analytical purposes.
-- **Columns:**
+3. sales
+- Purpose: Stores transactional sales data for analytical purposes.
+- Columns:
 
 | Column Name     | Data Type     | Description                                                                                   |
 |-----------------|---------------|-----------------------------------------------------------------------------------------------|
