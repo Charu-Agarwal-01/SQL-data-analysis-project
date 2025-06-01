@@ -1,5 +1,6 @@
 # SQL-data-analysis-project
-Building a modern data warehouse with MySQL, data modeling, data transformations and data analytics.
+Welcome to the SQL based data analysis project repository!
+The project demonstrates a comprehensive data tranformation, data modeling and analytics solution to generate actionable insights from the raw data.
 
 ## 📖 Project Overview
 
