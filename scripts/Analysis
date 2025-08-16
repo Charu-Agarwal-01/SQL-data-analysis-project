@@ -10,7 +10,7 @@ JOIN products p ON s.product_key = p.product_key
 GROUP BY p.product_line
 ORDER BY total_revenue DESC;
 
-<img src="sample images/1.png" alt="Sample 1" width="600"/>
+<img src="images/1.png" alt="Sample 1" width="600"/>
 
 
 ----------------------------------------------------------------------------------------------------------------------------
