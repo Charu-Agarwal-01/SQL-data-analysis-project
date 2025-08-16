@@ -1,8 +1,8 @@
-# Sales and Customers analysis -- SQL
+# Sales and Customers analysis-SQL
 Welcome to the SQL based data analysis project repository!
 The project demonstrates a comprehensive data tranformation, data modeling and analytics solution to generate actionable insights from the raw data.
 
-## 📖 Project Overview
+## Project Overview
 
 This project involves:
 
