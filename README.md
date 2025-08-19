@@ -2,6 +2,15 @@
 Welcome to the SQL and PowerBI based data analysis project repository!
 The project showcases an end-to-end data transformation, modeling, and analytics solution. Using SQL, raw Customer, Products, and Sales data were cleaned, transformed, and structured to generate actionable insights. These insights were further visualized through interactive dashboards in Power BI, enabling effective decision making and business intelligence.
 
+
+  <img src="PowerBI visualisation/images/Customer Demographics.png" alt="pred_1" width="800"/>
+  
+  <img src="PowerBI visualisation/images/Sales Performance.png" alt="pred_1" width="800"/>
+  
+  <img src="PowerBI visualisation/images/Same period last year.png" alt="pred_1" width="800"/>
+  
+  <img src="PowerBI visualisation/images/Product Insights.png" alt="pred_1" width="800"/>
+  
 ## Project Overview
 
 This project involves:
