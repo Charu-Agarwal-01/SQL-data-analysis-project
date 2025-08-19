@@ -35,7 +35,3 @@ Develop SQL and PowerBI based analytics to deliver detailed insights into:
 - **Integration**: Combine both sources into a single, user-friendly data model designed for analytical queries.
 - **Documentation**: Provide clear documentation of the data model to support both business stakeholders and analytics teams.
 
-  <img src="PowerBI visualisation/images/Customer Demographics.png" alt="pred_1" width="800"/>
-  <img src="PowerBI visualisation/images/Sales Performance.png" alt="pred_1" width="800"/>
-  <img src="PowerBI visualisation/images/Same period last year.png" alt="pred_1" width="800"/>
-  <img src="PowerBI visualisation/images/Product Insights.png" alt="pred_1" width="800"/>
