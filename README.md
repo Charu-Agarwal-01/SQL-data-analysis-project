@@ -25,3 +25,8 @@ Develop SQL and PowerBI based analytics to deliver detailed insights into:
 - **Data Quality**: Cleanse and resolve data quality issues prior to analysis.
 - **Integration**: Combine both sources into a single, user-friendly data model designed for analytical queries.
 - **Documentation**: Provide clear documentation of the data model to support both business stakeholders and analytics teams.
+
+  <img src="images/Customer Demographics.png" alt="pred_1" width="800"/>
+  <img src="Deployment/Sales Performance.png" alt="pred_1" width="800"/>
+  <img src="Deployment/Same period last year.png" alt="pred_1" width="800"/>
+  <img src="Deployment/Product Insights.png" alt="pred_1" width="800"/>
