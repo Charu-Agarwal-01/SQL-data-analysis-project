@@ -1,6 +1,7 @@
-# Sales and Customers analysis-SQL
-Welcome to the SQL based data analysis project repository!
-The project demonstrates a comprehensive data tranformation, data modeling and analytics solution to generate actionable insights from the raw data.
+# Sales and Customers analysis using SQL and PowerBI
+Welcome to the SQL and PowerBI based data analysis project repository!
+The project demonstrates a comprehensive data tranformation, data modeling and analytics solution to generate actionable insights from the Customer, Products and Sales data
+to extract insights and generting dashboards using PowerBI for extracting insights using visualisations.
 
 ## Project Overview
 
